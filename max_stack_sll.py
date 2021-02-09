@@ -62,7 +62,7 @@ class MaxStack:
         # the sll_val linked list, but the new value is only added to sll_max if the new value is greater than the head
         # value. Else, the current head value is repeated.
         else:
-            val = self.sll_val.get_front()
+            val = self.sll_max.get_front()
             self.sll_val.add_front(value)
             if value > self.sll_max.get_front():
                 self.sll_max.add_front(value)
@@ -162,4 +162,11 @@ if __name__ == "__main__":
             print(s.get_max())
         except Exception as e:
             print(type(e))
+
+    print('\n# get_max example 2')
+    s = MaxStack()
+    for value in [12301, -54781, -63722]:
+        s.push(value)
+    print(s)
+    print(s.get_max())
 
