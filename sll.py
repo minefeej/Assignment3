@@ -344,7 +344,7 @@ class LinkedList:
         cur = self.head
         count = 0
         # Checks for an index out of range and a size out of range.
-        if start_index > length - 1 or start_index < 0 or length - start_index < size:
+        if start_index > length - 1 or start_index < 0 or size < 0 or length - start_index < size:
             raise SLLException
         # Checks if the size is zero and returns an empty linked list object.
         elif size == 0:
