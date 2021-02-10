@@ -403,7 +403,7 @@ class CircularList:
                     high_next = None
                     cur = self.sentinel.next
                     # Loop through the list and grab the right values.
-                    for i in range(length):
+                    for i in range(high + 1):
                         if i == low:
                             low_node = cur
                             low_prev = cur.prev
@@ -432,7 +432,7 @@ class CircularList:
                     high_next = None
                     cur = self.sentinel.next
                     # Loop through the list to grab the values.
-                    for i in range(length):
+                    for i in range(high + 1):
                         if i == low:
                             low_node = cur
                             low_prev = cur.prev
@@ -449,12 +449,17 @@ class CircularList:
                     high_node.prev = low_prev
                     high_node.next = low_node
                     high_next.prev = low_node
+            else:
+                pass
 
     def reverse(self) -> None:
         """
         TODO: Write this implementation
         """
+        if self.is_empty() is True:
+            pass
         pass
+
 
     def sort(self) -> None:
         """
