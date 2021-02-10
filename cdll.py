@@ -470,7 +470,7 @@ class CircularList:
                 nxt.next = cur
                 cur = nxt
                 nxt = nxt.prev
-            # self.sentinel = cur
+            self.sentinel = cur
 
     def sort(self) -> None:
         """
