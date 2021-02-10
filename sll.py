@@ -90,7 +90,6 @@ class LinkedList:
         """
         Adds a new node at the end of the list (right before the back sentinel).
         """
-        # traverse the list to find last node
         new_link = SLNode(value)
         cur = self.head
         # Checks if the list is empty and, if so, appends the new value between the sentinels.

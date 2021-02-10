@@ -1,6 +1,6 @@
 # Course: CS261 - Data Structures
-# Student Name:
-# Assignment:
+# Student Name: Joseph Minefee
+# Assignment: Assignment 3 - Circular Doubly Linked List
 # Description:
 
 
@@ -104,63 +104,272 @@ class CircularList:
 
     def add_front(self, value: object) -> None:
         """
-        TODO: Write this implementation
+        Adds a new node at the beginning of the list (right after the front sentinel).
         """
-        pass
+        # Sets current to the sentinel, creates a new link, points new_link's next to current's next node, and inserts
+        # the new link.
+        cur = self.sentinel
+        new_link = DLNode(value)
+        new_link.next = cur.next
+        new_link.prev = cur
+        cur.next.prev = new_link
+        cur.next = new_link
 
     def add_back(self, value: object) -> None:
         """
-        TODO: Write this implementation
+        Adds a new node at the end of the list (right before the back sentinel).
         """
-        pass
+        new_link = DLNode(value)
+        cur = self.sentinel
+        # Checks if the list is empty and, if so, appends the new value between the sentinel.
+        if self.is_empty() is True:
+            cur = self.sentinel
+            new_link = DLNode(value)
+            new_link.next = cur.next
+            new_link.prev = cur
+            cur.next.prev = new_link
+            cur.next = new_link
+        # Else, it calls the recursive helper function.
+        else:
+            self.add_back_rec(cur.next, new_link)
+
+    def add_back_rec(self, cur, new_link):
+        """
+        Recursive helper function for the add_back function.
+        """
+        cur = cur
+        new_link = new_link
+        # Base case is if the sentinel is the next node in the linked list. If so, it inserts the new value before the
+        # sentinel.
+        if cur.next == self.sentinel:
+            new_link.next = cur.next
+            new_link.prev = cur
+            cur.next.prev = new_link
+            cur.next = new_link
+        # Else, the function calls itself.
+        else:
+            self.add_back_rec(cur.next, new_link)
 
     def insert_at_index(self, index: int, value: object) -> None:
         """
-        TODO: Write this implementation
+        Adds a new value at the specified index position in the linked list.
         """
-        pass
+        length = self.length()
+        ind = index
+        new_link = DLNode(value)
+        cur = self.sentinel
+        count = 0
+        # Checks if the index is greater than length or negative and raises an exception if so.
+        if ind > length or ind < 0:
+            raise CDLLException
+        # Else if the index is zero, the add_front function is called.
+        else:
+            if ind == 0:
+                self.add_front(value)
+            # Else, it calls the recursive helper function.
+            else:
+                count += 1
+                self.insert_at_index_rec(ind, count, cur.next, new_link)
+
+    def insert_at_index_rec(self, ind, count, cur, new_node):
+        """
+        Recursive helper function for insert_at_index with a base case that index is equal to count.
+        """
+        cur = cur
+        new_link = new_node
+        ind = ind
+        count = count
+        # Checks if the count and index is equal. If so, it inserts the new node.
+        if ind == count:
+            new_link.next = cur.next
+            new_link.prev = cur
+            cur.next.prev = new_link
+            cur.next = new_link
+            # Else, the count in incremented and the function calls itself.
+        else:
+            count += 1
+            self.insert_at_index_rec(ind, count, cur.next, new_link)
 
     def remove_front(self) -> None:
         """
-        TODO: Write this implementation
+        Removes the first node from the list. If the list is empty, an exception is raised.
         """
-        pass
+        head = self.sentinel
+        cur = head.next
+        nxt = cur.next
+        # Checking for empty list. If list is empty an exception is raised.
+        if self.is_empty() is True:
+            raise CDLLException
+        # Else, removing the node directly after the head.
+        else:
+            nxt.prev = head
+            head.next = cur.next
 
     def remove_back(self) -> None:
         """
-        TODO: Write this implementation
+        Removes the last node from the list. If the list is empty, an exception is raised.
         """
-        pass
+        cur = self.sentinel
+        # Checks if list is empty and raises an exception if it is.
+        if self.is_empty() is True:
+            raise CDLLException
+        # Else, it calls the recursive helper function.
+        else:
+            self.remove_back_rec(cur.next)
+
+    def remove_back_rec(self, cur):
+        """
+        Recursive helper function for the remove_back function.
+        """
+        # Checks for the last node. If the node is just before the sentinel, it is removed.
+        if cur.next == self.sentinel:
+            last = cur
+            before_last = last.prev
+            self.sentinel.prev = before_last
+            before_last.next = self.sentinel
+        # Else, the function calls itself.
+        else:
+            self.remove_back_rec(cur.next)
 
     def remove_at_index(self, index: int) -> None:
         """
-        TODO: Write this implementation
+        Removes a node from the list given its index. If the index is invalid an exception is raised.
         """
-        pass
+        length = self.length()
+        ind = index
+        cur = self.sentinel
+        count = 0
+        # Checking if index is out of range, index is negative, or the list is empty. If so an exception is raised.
+        if ind > length - 1 or ind < 0 or length == 0:
+            raise CDLLException
+        # If the index is zero, then the remove_front method is called.
+        elif ind == 0:
+            self.remove_front()
+        # If the index is the last node, then the remove_back method is called.
+        elif ind == length - 1:
+            self.remove_back()
+        # Else, the recursive helper function is called.
+        else:
+            self.remove_at_index_rec(ind, count, cur, cur.next)
+
+    def remove_at_index_rec(self, ind, count, prev, cur):
+        """
+        Recursive helper method for the remove at index function.
+        """
+        # If the index is equal to the count, then the current node is removed.
+        if ind == count:
+            nxt = cur.next
+            nxt.prev = prev
+            prev.next = nxt
+        # Else, the function calls itself.
+        else:
+            count += 1
+            self.remove_at_index_rec(ind, count, cur, cur.next)
 
     def get_front(self) -> object:
         """
-        TODO: Write this implementation
+        Returns the value from the first node in the list without removing it. If the list is empty an exception is
+        raised.
         """
-        pass
+        cur = self.sentinel.next
+        # Checking if list is empty. If so, an exception is raised.
+        if self.is_empty() is True:
+            raise CDLLException
+        # Else, the value of the node just after the sentinel is returned.
+        else:
+            return cur.value
 
     def get_back(self) -> object:
         """
-        TODO: Write this implementation
+        Returns the value from the last node in the list without removing it. If the list is empty an exception is
+        raised.
         """
-        pass
+        # Checking if list is empty. If so, an exception is raised.
+        if self.is_empty() is True:
+            raise CDLLException
+            # Else, the recursive helper method is returned.
+        else:
+            return self.get_back_rec(self.sentinel.next)
+
+    def get_back_rec(self, cur):
+        """
+        Recursive helper method for the get_back function. Returns the value of the last node.
+        """
+        # Checks for base case which is the node just before the back sentinel and returns that node's value.
+        if cur.next == self.sentinel:
+            return cur.value
+        # Returns the recursive call.
+        else:
+            return self.get_back_rec(cur.next)
 
     def remove(self, value: object) -> bool:
         """
-        TODO: Write this implementation
+        Traverses the list from the beginning to the end and removes the first node in the list that matches the
+        provided value object. It returns True if some node was actually removed from the list. Otherwise, it returns
+        False.
         """
-        pass
+        cur = self.sentinel
+        val = value
+        # Checks for an empty list. If so, returns False.
+        if self.is_empty() is True:
+            return False
+        # Else, returns the recursive helper method.
+        else:
+            return self.remove_rec(cur, cur.next, val)
+
+    def remove_rec(self, prev, cur, val):
+        """
+        Recursive helper method for the remove function. Returns true if a node is removed. Else, returns false.
+        """
+        # Checks for the base case. If the current node's value is equal to the passed value, the node is removed and
+        # True is returned.
+        if cur.value == val:
+            nxt = cur.next
+            nxt.prev = prev
+            prev.next = nxt
+            return True
+        # If the next node is the sentinel, False is returned as the value isn't present in the list.
+        elif cur.next == self.sentinel:
+            return False
+        # Else, the recursive function is returned.
+        else:
+            return self.remove_rec(cur, cur.next, val)
 
     def count(self, value: object) -> int:
         """
-        TODO: Write this implementation
+        Counts the number of elements in the list that match the passed value.
         """
-        pass
+        cur = self.sentinel
+        val = value
+        count = 0
+        # Checks for an empty list. If list is empty the count is returned as 0.
+        if self.is_empty() is True:
+            return count
+        # Else, the recursive helper function is returned.
+        else:
+            return self.count_rec(count, cur.next, val)
+
+    def count_rec(self, count, cur, val):
+        """
+        Recursive helper method for the count function. Returns the count of elements in the list that match the
+        provided value.
+        """
+        # Checks if the current node value is equal to the passed value. If so, it increments the count.
+        if cur.value == val:
+            count += 1
+            # If current is the last node, the count is returned.
+            if cur.next == self.sentinel:
+                return count
+            # Else, the recursive function is returned.
+            else:
+                return self.count_rec(count, cur.next, val)
+        else:
+            # If current is the last node, the count is returned.
+            if cur.next == self.sentinel:
+                return count
+            # Else, the recursive function is returned.
+            else:
+                return self.count_rec(count, cur.next, val)
 
     def swap_pairs(self, index1: int, index2: int) -> None:
         """
@@ -207,231 +416,231 @@ class CircularList:
 if __name__ == '__main__':
     pass
 
-    # print('\n# add_front example 1')
-    # lst = CircularList()
-    # print(lst)
-    # lst.add_front('A')
-    # lst.add_front('B')
-    # lst.add_front('C')
-    # print(lst)
-    #
-    # print('\n# add_back example 1')
-    # lst = CircularList()
-    # print(lst)
-    # lst.add_back('C')
-    # lst.add_back('B')
-    # lst.add_back('A')
-    # print(lst)
-    #
-    # print('\n# insert_at_index example 1')
-    # lst = CircularList()
-    # test_cases = [(0, 'A'), (0, 'B'), (1, 'C'), (3, 'D'), (-1, 'E'), (5, 'F')]
-    # for index, value in test_cases:
-    #     print('Insert of', value, 'at', index, ': ', end='')
-    #     try:
-    #         lst.insert_at_index(index, value)
-    #         print(lst)
-    #     except Exception as e:
-    #         print(type(e))
-    #
-    # print('\n# remove_front example 1')
-    # lst = CircularList([1, 2])
-    # print(lst)
-    # for i in range(3):
-    #     try:
-    #         lst.remove_front()
-    #         print('Successful removal', lst)
-    #     except Exception as e:
-    #         print(type(e))
-    #
-    # print('\n# remove_back example 1')
-    # lst = CircularList()
-    # try:
-    #     lst.remove_back()
-    # except Exception as e:
-    #     print(type(e))
-    # lst.add_front('Z')
-    # lst.remove_back()
-    # print(lst)
-    # lst.add_front('Y')
-    # lst.add_back('Z')
-    # lst.add_front('X')
-    # print(lst)
-    # lst.remove_back()
-    # print(lst)
-    #
-    # print('\n# remove_at_index example 1')
-    # lst = CircularList([1, 2, 3, 4, 5, 6])
-    # print(lst)
-    # for index in [0, 0, 0, 2, 2, -2]:
-    #     print('Removed at index:', index, ': ', end='')
-    #     try:
-    #         lst.remove_at_index(index)
-    #         print(lst)
-    #     except Exception as e:
-    #         print(type(e))
-    # print(lst)
-    #
-    # print('\n# get_front example 1')
-    # lst = CircularList(['A', 'B'])
-    # print(lst.get_front())
-    # print(lst.get_front())
-    # lst.remove_front()
-    # print(lst.get_front())
-    # lst.remove_back()
-    # try:
-    #     print(lst.get_front())
-    # except Exception as e:
-    #     print(type(e))
-    #
-    # print('\n# get_back example 1')
-    # lst = CircularList([1, 2, 3])
-    # lst.add_back(4)
-    # print(lst.get_back())
-    # lst.remove_back()
-    # print(lst)
-    # print(lst.get_back())
-    #
-    # print('\n# remove example 1')
-    # lst = CircularList([1, 2, 3, 1, 2, 3, 1, 2, 3])
-    # print(lst)
-    # for value in [7, 3, 3, 3, 3]:
-    #     print(lst.remove(value), lst.length(), lst)
-    #
-    # print('\n# count example 1')
-    # lst = CircularList([1, 2, 3, 1, 2, 2])
-    # print(lst, lst.count(1), lst.count(2), lst.count(3), lst.count(4))
-    #
-    # print('\n# swap_pairs example 1')
-    # lst = CircularList([0, 1, 2, 3, 4, 5, 6])
-    # test_cases = ((0, 6), (0, 7), (-1, 6), (1, 5),
-    #               (4, 2), (3, 3), (1, 2), (2, 1))
-    #
-    # for i, j in test_cases:
-    #     print('Swap nodes ', i, j, ' ', end='')
-    #     try:
-    #         lst.swap_pairs(i, j)
-    #         print(lst)
-    #     except Exception as e:
-    #         print(type(e))
-    #
-    # print('\n# reverse example 1')
-    # test_cases = (
-    #     [1, 2, 3, 3, 4, 5],
-    #     [1, 2, 3, 4, 5],
-    #     ['A', 'B', 'C', 'D']
-    # )
-    # for case in test_cases:
-    #     lst = CircularList(case)
-    #     lst.reverse()
-    #     print(lst)
-    #
-    # print('\n# reverse example 2')
-    # lst = CircularList()
-    # print(lst)
-    # lst.reverse()
-    # print(lst)
-    # lst.add_back(2)
-    # lst.add_back(3)
-    # lst.add_front(1)
-    # lst.reverse()
-    # print(lst)
-    #
-    # print('\n# reverse example 3')
-    #
-    #
-    # class Student:
-    #     def __init__(self, name, age):
-    #         self.name, self.age = name, age
-    #
-    #     def __eq__(self, other):
-    #         return self.age == other.age
-    #
-    #     def __str__(self):
-    #         return str(self.name) + ' ' + str(self.age)
-    #
-    #
-    # s1, s2 = Student('John', 20), Student('Andy', 20)
-    # lst = CircularList([s1, s2])
-    # print(lst)
-    # lst.reverse()
-    # print(lst)
-    # print(s1 == s2)
-    #
-    # print('\n# reverse example 4')
-    # lst = CircularList([1, 'A'])
-    # lst.reverse()
-    # print(lst)
-    #
-    # print('\n# sort example 1')
-    # test_cases = (
-    #     [1, 10, 2, 20, 3, 30, 4, 40, 5],
-    #     ['zebra2', 'apple', 'tomato', 'apple', 'zebra1'],
-    #     [(1, 1), (20, 1), (1, 20), (2, 20)]
-    # )
-    # for case in test_cases:
-    #     lst = CircularList(case)
-    #     print(lst)
-    #     lst.sort()
-    #     print(lst)
-    #
-    # print('\n# rotate example 1')
-    # source = [_ for _ in range(-20, 20, 7)]
-    # for steps in [1, 2, 0, -1, -2, 28, -100]:
-    #     lst = CircularList(source)
-    #     lst.rotate(steps)
-    #     print(lst, steps)
-    #
-    # print('\n# rotate example 2')
-    # lst = CircularList([10, 20, 30, 40])
-    # for j in range(-1, 2, 2):
-    #     for _ in range(3):
-    #         lst.rotate(j)
-    #         print(lst)
-    #
-    # print('\n# rotate example 3')
-    # lst = CircularList()
-    # lst.rotate(10)
-    # print(lst)
-    #
-    # print('\n# remove_duplicates example 1')
-    # test_cases = (
-    #     [1, 2, 3, 4, 5], [1, 1, 1, 1, 1],
-    #     [], [1], [1, 1], [1, 1, 1, 2, 2, 2],
-    #     [0, 1, 1, 2, 3, 3, 4, 5, 5, 6],
-    #     list("abccd"),
-    #     list("005BCDDEEFI")
-    # )
-    #
-    # for case in test_cases:
-    #     lst = CircularList(case)
-    #     print('INPUT :', lst)
-    #     lst.remove_duplicates()
-    #     print('OUTPUT:', lst)
-    #
-    # print('\n# odd_even example 1')
-    # test_cases = (
-    #     [1, 2, 3, 4, 5], list('ABCDE'),
-    #     [], [100], [100, 200], [100, 200, 300],
-    #     [100, 200, 300, 400],
-    #     [10, 'A', 20, 'B', 30, 'C', 40, 'D', 50, 'E']
-    # )
-    #
-    # for case in test_cases:
-    #     lst = CircularList(case)
-    #     print('INPUT :', lst)
-    #     lst.odd_even()
-    #     print('OUTPUT:', lst)
+    print('\n# add_front example 1')
+    lst = CircularList()
+    print(lst)
+    lst.add_front('A')
+    lst.add_front('B')
+    lst.add_front('C')
+    print(lst)
 
-    # print('\n# add_integer example 1')
-    # test_cases = (
-    #   ([1, 2, 3], 10456),
-    #   ([], 25),
-    #   ([2, 0, 9, 0, 7], 108),
-    #    ([9, 9, 9], 9_999_999),
-    #)
-    # for list_content, integer in test_cases:
-    #    lst = CircularList(list_content)
-    # print('INPUT :', lst, 'INTEGER', integer)
-    # lst.add_integer(integer)
-    # print('OUTPUT:', lst)
+    print('\n# add_back example 1')
+    lst = CircularList()
+    print(lst)
+    lst.add_back('C')
+    lst.add_back('B')
+    lst.add_back('A')
+    print(lst)
+
+    print('\n# insert_at_index example 1')
+    lst = CircularList()
+    test_cases = [(0, 'A'), (0, 'B'), (1, 'C'), (3, 'D'), (-1, 'E'), (5, 'F')]
+    for index, value in test_cases:
+        print('Insert of', value, 'at', index, ': ', end='')
+        try:
+            lst.insert_at_index(index, value)
+            print(lst)
+        except Exception as e:
+            print(type(e))
+
+    print('\n# remove_front example 1')
+    lst = CircularList([1, 2])
+    print(lst)
+    for i in range(3):
+        try:
+            lst.remove_front()
+            print('Successful removal', lst)
+        except Exception as e:
+            print(type(e))
+
+    print('\n# remove_back example 1')
+    lst = CircularList()
+    try:
+        lst.remove_back()
+    except Exception as e:
+        print(type(e))
+    lst.add_front('Z')
+    lst.remove_back()
+    print(lst)
+    lst.add_front('Y')
+    lst.add_back('Z')
+    lst.add_front('X')
+    print(lst)
+    lst.remove_back()
+    print(lst)
+
+    print('\n# remove_at_index example 1')
+    lst = CircularList([1, 2, 3, 4, 5, 6])
+    print(lst)
+    for index in [0, 0, 0, 2, 2, -2]:
+        print('Removed at index:', index, ': ', end='')
+        try:
+            lst.remove_at_index(index)
+            print(lst)
+        except Exception as e:
+            print(type(e))
+    print(lst)
+
+    print('\n# get_front example 1')
+    lst = CircularList(['A', 'B'])
+    print(lst.get_front())
+    print(lst.get_front())
+    lst.remove_front()
+    print(lst.get_front())
+    lst.remove_back()
+    try:
+        print(lst.get_front())
+    except Exception as e:
+        print(type(e))
+
+    print('\n# get_back example 1')
+    lst = CircularList([1, 2, 3])
+    lst.add_back(4)
+    print(lst.get_back())
+    lst.remove_back()
+    print(lst)
+    print(lst.get_back())
+
+    print('\n# remove example 1')
+    lst = CircularList([1, 2, 3, 1, 2, 3, 1, 2, 3])
+    print(lst)
+    for value in [7, 3, 3, 3, 3]:
+        print(lst.remove(value), lst.length(), lst)
+
+    print('\n# count example 1')
+    lst = CircularList([1, 2, 3, 1, 2, 2])
+    print(lst, lst.count(1), lst.count(2), lst.count(3), lst.count(4))
+
+    print('\n# swap_pairs example 1')
+    lst = CircularList([0, 1, 2, 3, 4, 5, 6])
+    test_cases = ((0, 6), (0, 7), (-1, 6), (1, 5),
+                  (4, 2), (3, 3), (1, 2), (2, 1))
+
+    for i, j in test_cases:
+        print('Swap nodes ', i, j, ' ', end='')
+        try:
+            lst.swap_pairs(i, j)
+            print(lst)
+        except Exception as e:
+            print(type(e))
+
+    print('\n# reverse example 1')
+    test_cases = (
+        [1, 2, 3, 3, 4, 5],
+        [1, 2, 3, 4, 5],
+        ['A', 'B', 'C', 'D']
+    )
+    for case in test_cases:
+        lst = CircularList(case)
+        lst.reverse()
+        print(lst)
+
+    print('\n# reverse example 2')
+    lst = CircularList()
+    print(lst)
+    lst.reverse()
+    print(lst)
+    lst.add_back(2)
+    lst.add_back(3)
+    lst.add_front(1)
+    lst.reverse()
+    print(lst)
+
+    print('\n# reverse example 3')
+
+
+    class Student:
+        def __init__(self, name, age):
+            self.name, self.age = name, age
+
+        def __eq__(self, other):
+            return self.age == other.age
+
+        def __str__(self):
+            return str(self.name) + ' ' + str(self.age)
+
+
+    s1, s2 = Student('John', 20), Student('Andy', 20)
+    lst = CircularList([s1, s2])
+    print(lst)
+    lst.reverse()
+    print(lst)
+    print(s1 == s2)
+
+    print('\n# reverse example 4')
+    lst = CircularList([1, 'A'])
+    lst.reverse()
+    print(lst)
+
+    print('\n# sort example 1')
+    test_cases = (
+        [1, 10, 2, 20, 3, 30, 4, 40, 5],
+        ['zebra2', 'apple', 'tomato', 'apple', 'zebra1'],
+        [(1, 1), (20, 1), (1, 20), (2, 20)]
+    )
+    for case in test_cases:
+        lst = CircularList(case)
+        print(lst)
+        lst.sort()
+        print(lst)
+
+    print('\n# rotate example 1')
+    source = [_ for _ in range(-20, 20, 7)]
+    for steps in [1, 2, 0, -1, -2, 28, -100]:
+        lst = CircularList(source)
+        lst.rotate(steps)
+        print(lst, steps)
+
+    print('\n# rotate example 2')
+    lst = CircularList([10, 20, 30, 40])
+    for j in range(-1, 2, 2):
+        for _ in range(3):
+            lst.rotate(j)
+            print(lst)
+
+    print('\n# rotate example 3')
+    lst = CircularList()
+    lst.rotate(10)
+    print(lst)
+
+    print('\n# remove_duplicates example 1')
+    test_cases = (
+        [1, 2, 3, 4, 5], [1, 1, 1, 1, 1],
+        [], [1], [1, 1], [1, 1, 1, 2, 2, 2],
+        [0, 1, 1, 2, 3, 3, 4, 5, 5, 6],
+        list("abccd"),
+        list("005BCDDEEFI")
+    )
+
+    for case in test_cases:
+        lst = CircularList(case)
+        print('INPUT :', lst)
+        lst.remove_duplicates()
+        print('OUTPUT:', lst)
+
+    print('\n# odd_even example 1')
+    test_cases = (
+        [1, 2, 3, 4, 5], list('ABCDE'),
+        [], [100], [100, 200], [100, 200, 300],
+        [100, 200, 300, 400],
+        [10, 'A', 20, 'B', 30, 'C', 40, 'D', 50, 'E']
+    )
+
+    for case in test_cases:
+        lst = CircularList(case)
+        print('INPUT :', lst)
+        lst.odd_even()
+        print('OUTPUT:', lst)
+
+    print('\n# add_integer example 1')
+    test_cases = (
+      ([1, 2, 3], 10456),
+      ([], 25),
+      ([2, 0, 9, 0, 7], 108),
+       ([9, 9, 9], 9_999_999),
+    )
+    for list_content, integer in test_cases:
+       lst = CircularList(list_content)
+    print('INPUT :', lst, 'INTEGER', integer)
+    lst.add_integer(integer)
+    print('OUTPUT:', lst)
