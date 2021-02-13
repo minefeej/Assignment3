@@ -561,12 +561,44 @@ class CircularList:
                             cur.next.prev = cur
                     cur = cur.next
 
-
     def rotate(self, steps: int) -> None:
         """
-        TODO: Write this implementation
+        Rotates the linked list by shifting positions of its elements right or left steps number of times. If steps
+        is positive, elements are rotated right. If steps are negative, elements are rotated left.
         """
-        pass
+        length = self.length()
+        dist = None
+        # Check for empty list.
+        if self.is_empty():
+            pass
+        # Check if steps are negative and calculate the proper index to move.
+        else:
+            if steps < 0 and -steps < length:
+                dist = length + steps
+            elif steps < 0 and -steps > length:
+                if -(steps) % length == 0:
+                    dist = 0
+                else:
+                    dist = length - (-steps % length)
+            else:
+                dist = steps % length
+            # If distance greater than and not equal to zero, the elements will be rotated.
+            if dist > 0 and dist != 0:
+                cur = self.sentinel.prev
+                # Loops through the elements of the list to find the right index to insert the sentinel.
+                for el in range(dist):
+                    cur = cur.prev
+                sent = self.sentinel
+                nxt = cur.next
+                cur.next = sent
+                sent.next.prev = sent.prev
+                sent.prev.next = sent.next
+                sent.next = nxt
+                nxt.prev = sent
+                sent.prev = cur
+            # If distance is zero, the list is left unchanged.
+            else:
+                pass
 
     def remove_duplicates(self) -> None:
         """
@@ -787,6 +819,13 @@ if __name__ == '__main__':
     lst = CircularList()
     lst.rotate(10)
     print(lst)
+
+    print('\n# rotate example 4')
+    source = [1, 2, 3, 4, 5]
+    steps = -4444
+    lst = CircularList(source)
+    lst.rotate(steps)
+    print(lst, steps)
 
     print('\n# remove_duplicates example 1')
     test_cases = (
