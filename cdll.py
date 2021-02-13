@@ -450,6 +450,67 @@ class CircularList:
                     pass
             else:
                 pass
+        # length = self.length()
+        # if index1 == index2:
+        #     pass
+        # elif self.is_empty() is True or index1 < 0 or index2 < 0 or index1 > length - 1 or index2 > length - 1:
+        #     raise CDLLException
+        # else:
+        #     if index1 + 1 == index2 or index1 - 1 == index2:
+        #         one_node = None
+        #         one_prev = None
+        #         two_node = None
+        #         two_next = None
+        #         cur = self.sentinel.next
+        #         # Loop through the list to grab the values.
+        #         for i in range(length):
+        #             if i == index1:
+        #                 one_node = cur
+        #                 one_prev = cur.prev
+        #                 cur = cur.next
+        #             elif i == index2:
+        #                 two_node = cur
+        #                 two_next = cur.next
+        #             else:
+        #                 cur = cur.next
+        #         # Make the swap.
+        #         one_prev.next = two_node
+        #         one_node.next = two_next
+        #         one_node.prev = two_node
+        #         two_node.prev = one_prev
+        #         two_node.next = one_node
+        #         two_next.prev = one_node
+        #
+        #     else:
+        #         one_node = None
+        #         one_prev = None
+        #         one_next = None
+        #         two_node = None
+        #         two_prev = None
+        #         two_next = None
+        #         cur = self.sentinel.next
+        #         # Loop through the list and grab the right values.
+        #         for i in range(length):
+        #             if i == index1:
+        #                 one_node = cur
+        #                 one_prev = cur.prev
+        #                 one_next = cur.next
+        #                 cur = cur.next
+        #             elif i == index2:
+        #                 two_node = cur
+        #                 two_prev = cur.prev
+        #                 two_next = cur.next
+        #             else:
+        #                 cur = cur.next
+        #         # Make the swap.
+        #         one_prev.next = two_node
+        #         one_node.next = two_next
+        #         one_node.prev = two_prev
+        #         one_next.prev = two_node
+        #         two_prev.next = one_node
+        #         two_node.prev = one_prev
+        #         two_node.next = one_next
+        #         two_next.prev = one_node
 
     def reverse(self) -> None:
         """
@@ -460,6 +521,7 @@ class CircularList:
             pass
         # Else, we swap the pointers for each node starting with the sentinel and iterating through the list.
         else:
+            hold = self.sentinel.next
             cur = self.sentinel
             nxt = cur.next
             cur.next = None
@@ -470,7 +532,7 @@ class CircularList:
                 nxt.next = cur
                 cur = nxt
                 nxt = nxt.prev
-            self.sentinel = cur
+            self.sentinel.prev = hold
 
     def sort(self) -> None:
         """
