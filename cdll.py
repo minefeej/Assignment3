@@ -536,9 +536,31 @@ class CircularList:
 
     def sort(self) -> None:
         """
-        TODO: Write this implementation
+        Sorts the content of a doubly linked list in non-descending order using a bubble sort.
         """
-        pass
+        # Checking for an empty list. If so, it passes out of the function.
+        if self.is_empty() is True:
+            pass
+        # Uses the length of the list to initialize two loops. The first passes through each element while for each pass
+        # the second loop loops through the adjacent elements and makes swaps.
+        else:
+            length = self.length()
+            cur = self.sentinel
+            for pass_num in range(length - 1):
+                for ind in range(length):
+                    if cur.next.value is not None and cur.value is not None:
+                        if cur.value > cur.next.value:
+                            # temp = cur.prev
+                            cur = cur
+                            nxt = cur.next
+                            cur.next = nxt.next
+                            nxt.next = cur
+                            cur.prev.next = nxt
+                            nxt.prev = cur.prev
+                            cur.prev = nxt
+                            cur.next.prev = cur
+                    cur = cur.next
+
 
     def rotate(self, steps: int) -> None:
         """
