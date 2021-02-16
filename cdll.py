@@ -642,7 +642,7 @@ class CircularList:
                     cur = cur.next
             # Then the node is swapped to its new location and the gaps are filled in.
             cur.prev.next = cur.next
-            cur.next = cur.prev
+            cur.next.prev = cur.prev
             cur.next = new_cur.next
             new_cur.next = cur
             cur.next.prev = cur
@@ -947,6 +947,10 @@ if __name__ == '__main__':
         lst = CircularList(case)
         print('INPUT :', lst)
         lst.odd_even()
+        # cur = lst.sentinel
+        # for i in range(6):
+        #     print(cur)
+        #     cur = cur.next
         print('OUTPUT:', lst)
 
     print('\n# add_integer example 1')
