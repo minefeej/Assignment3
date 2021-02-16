@@ -602,21 +602,105 @@ class CircularList:
 
     def remove_duplicates(self) -> None:
         """
-        TODO: Write this implementation
+        Deletes all nodes that have duplicate values from a sorted linked list, leaving only nodes with distinct values.
         """
-        pass
+        # If the list is empty, it does nothing.
+        if self.is_empty():
+            pass
+        # Else, cur is set to the first node of the list with a value. The while loop loops through the list removing
+        # duplicate values.
+        cur = self.sentinel.next
+        while cur.next.value is not None:
+            if cur.value == cur.next.value:
+                self.remove(cur.value)
+                self.remove(cur.next.value)
+                cur = cur.next
+            else:
+                cur = cur.next
 
     def odd_even(self) -> None:
         """
-        TODO: Write this implementation
+        Regroups a list of nodes by first regrouping all of the odd nodes in the front and the even nodes in the back.
         """
-        pass
+        # If the list is empty, it does nothing.
+        if self.is_empty():
+            pass
+        # Initialize cur as the second node with value and count as 1.
+        cur = self.sentinel.next.next
+        count = 1
+        # Loop through the nodes and move the odd nodes to the front by removing them then inserting the values back
+        # into the front of the list.
+        while cur.value is not None:
+            # If count is even (meaning an odd node) the node is removed then the value is inserted into back into the
+            # linked list at the font.
+            if count % 2 == 0:
+                value = cur.value
+                self.remove_at_index(count)
+                self.insert_at_index(count//2, value)
+            # The current node and count are incremented to the next values.
+            cur = cur.next
+            count += 1
+
+
+
 
     def add_integer(self, num: int) -> None:
         """
-        TODO: Write this implementation
+        Receives an integer and adds it to the number already stored in the linked list.
         """
-        pass
+        # Initializes the num to a new variable as a string so that it can be indexed into. Then the length of the
+        # num string and the linked list are assigned.
+        new_num = str(num)
+        num_len = len(new_num)
+        length = self.length()
+        # If the list is empty, the values are simply added to the end of the empty list.
+        if self.is_empty():
+            for i in range(num_len):
+                self.add_back(int(new_num[i]))
+        # If the length of the num is less than or equal to the length of the linked list then we don't have to add any
+        # new nodes to the list unless the first node needs to carry over which is done in the while loop.
+        elif num_len <= length:
+            cur = self.sentinel.prev
+            # We index into the new_num from the back.
+            num_i = -1
+            # Zeros are added to new_num so that it is the same length as the linked list.
+            new_num = "0" * (length - num_len + 1) + new_num
+            # While current isn't the sentinel, we iterate through the list to add the values from the back to the
+            # front. If the last (or first node) needs to carryover a one, it is added to the front.
+            while cur.value is not None:
+                cur.value = cur.value + int(new_num[num_i])
+                if cur.value >= 10:
+                    if cur.prev.value is not None:
+                        cur.prev.value = cur.prev.value + 1
+                        cur.value = cur.value - 10
+                    else:
+                        self.add_front(1)
+                        cur.value = cur.value - 10
+                # num_i and cur are incremented to the next values.
+                num_i -= 1
+                cur = cur.prev
+        # If the length of the number is greater than the linked list, we have to add nodes to the front of the linked
+        # list.
+        else:
+            cur = self.sentinel.prev
+            num_i = -1
+            diff = num_len - length
+            new_num = "0" + new_num
+            # We use the difference between the two values to add nodes to the front of the linked list.
+            for i in range(diff):
+                self.add_front(0)
+            # While the node isn't the sentinel, values are added the same as above.
+            while cur.value is not None:
+                cur.value = cur.value + int(new_num[num_i])
+                if cur.value >= 10:
+                    if cur.prev.value is not None:
+                        cur.prev.value = cur.prev.value + 1
+                        cur.value = cur.value - 10
+                    else:
+                        self.add_front(1)
+                        cur.value = cur.value - 10
+                num_i -= 1
+                cur = cur.prev
 
 
 
@@ -864,7 +948,20 @@ if __name__ == '__main__':
        ([9, 9, 9], 9_999_999),
     )
     for list_content, integer in test_cases:
-       lst = CircularList(list_content)
-    print('INPUT :', lst, 'INTEGER', integer)
-    lst.add_integer(integer)
-    print('OUTPUT:', lst)
+        lst = CircularList(list_content)
+        print('INPUT :', lst, 'INTEGER', integer)
+        lst.add_integer(integer)
+        print('OUTPUT:', lst)
+
+    print('\n# add_integer example 2')
+    test_cases = (
+      ([], 10456),
+      ([], 25),
+      ([2, 0, 9, 0, 7], 108),
+       ([9, 9, 9], 111),
+    )
+    for list_content, integer in test_cases:
+        lst = CircularList(list_content)
+        print('INPUT :', lst, 'INTEGER', integer)
+        lst.add_integer(integer)
+        print('OUTPUT:', lst)
