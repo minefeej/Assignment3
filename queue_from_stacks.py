@@ -1,7 +1,7 @@
 # Course: CS261 - Data Structures
-# Student Name:
-# Assignment:
-# Description:
+# Student Name: Joseph Minefee
+# Assignment: Assignment 3 - Queue
+# Description: Queue Implementation
 
 
 from max_stack_sll import *

@@ -1,7 +1,7 @@
 # Course: CS261 - Data Structures
 # Student Name: Joseph Minefee
 # Assignment: Assignment 3 - Circular Doubly Linked List
-# Description:
+# Description: Implement a Circular Linked List
 
 
 class CDLLException(Exception):
