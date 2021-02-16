@@ -84,12 +84,12 @@ class Queue:
 if __name__ == "__main__":
     pass
 
-    # print('\n# enqueue example 1')
-    # q = Queue()
-    # print(q)
-    # for value in [1, 2, 3, 4, 5]:
-    #     q.enqueue(value)
-    # print(q)
+    print('\n# enqueue example 1')
+    q = Queue()
+    print(q)
+    for value in [1, 2, 3, 4, 5]:
+        q.enqueue(value)
+    print(q)
 
     print('\n# dequeue example 1')
     q = Queue()
