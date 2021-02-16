@@ -625,24 +625,31 @@ class CircularList:
         # If the list is empty, it does nothing.
         if self.is_empty():
             pass
-        # Initialize cur as the second node with value and count as 1.
-        cur = self.sentinel.next.next
-        count = 1
-        # Loop through the nodes and move the odd nodes to the front by removing them then inserting the values back
-        # into the front of the list.
-        while cur.value is not None:
-            # If count is even (meaning an odd node) the node is removed then the value is inserted into back into the
-            # linked list at the font.
-            if count % 2 == 0:
-                value = cur.value
-                self.remove_at_index(count)
-                self.insert_at_index(count//2, value)
-            # The current node and count are incremented to the next values.
-            cur = cur.next
-            count += 1
-
-
-
+        # Initialize cur as the first node with value, count as two, and index as zero.
+        cur = self.sentinel.next
+        new_cur = None
+        length = self.length()
+        count = 2
+        ind = 0
+        # The while counter loops until the count exceed the length of the linked list.
+        while count < length:
+            # This for loop grabs the index where we want to insert the node and the index where the node is currently.
+            for i in range(count):
+                if i == ind:
+                    new_cur = cur
+                    cur = cur.next
+                else:
+                    cur = cur.next
+            # Then the node is swapped to its new location and the gaps are filled in.
+            cur.prev.next = cur.next
+            cur.next = cur.prev
+            cur.next = new_cur.next
+            new_cur.next = cur
+            cur.next.prev = cur
+            cur.prev = new_cur
+            ind += 1
+            count += 2
+            cur = self.sentinel.next
 
     def add_integer(self, num: int) -> None:
         """
@@ -655,8 +662,10 @@ class CircularList:
         length = self.length()
         # If the list is empty, the values are simply added to the end of the empty list.
         if self.is_empty():
+            num_i = -1
             for i in range(num_len):
-                self.add_back(int(new_num[i]))
+                self.add_front(int(new_num[num_i]))
+                num_i -= 1
         # If the length of the num is less than or equal to the length of the linked list then we don't have to add any
         # new nodes to the list unless the first node needs to carry over which is done in the while loop.
         elif num_len <= length:
@@ -925,7 +934,7 @@ if __name__ == '__main__':
         print('INPUT :', lst)
         lst.remove_duplicates()
         print('OUTPUT:', lst)
-
+    #
     print('\n# odd_even example 1')
     test_cases = (
         [1, 2, 3, 4, 5], list('ABCDE'),
@@ -951,7 +960,7 @@ if __name__ == '__main__':
         lst = CircularList(list_content)
         print('INPUT :', lst, 'INTEGER', integer)
         lst.add_integer(integer)
-        print('OUTPUT:', lst)
+        print('OUTPUT:', lst, lst.length())
 
     print('\n# add_integer example 2')
     test_cases = (
