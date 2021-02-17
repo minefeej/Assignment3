@@ -520,19 +520,18 @@ class CircularList:
         if self.is_empty() is True:
             pass
         # Else, we swap the pointers for each node starting with the sentinel and iterating through the list.
-        else:
-            hold = self.sentinel.next
-            cur = self.sentinel
-            nxt = cur.next
-            cur.next = None
-            cur.prev = nxt
-            # Looping until we reach the sentinel again.
-            while nxt is not None:
-                nxt.prev = nxt.next
-                nxt.next = cur
-                cur = nxt
-                nxt = nxt.prev
-            self.sentinel.prev = hold
+        hold = self.sentinel.next
+        cur = self.sentinel
+        nxt = cur.next
+        cur.next = None
+        cur.prev = nxt
+        # Looping until we reach the sentinel again.
+        while nxt is not None:
+            nxt.prev = nxt.next
+            nxt.next = cur
+            cur = nxt
+            nxt = nxt.prev
+        self.sentinel.prev = hold
 
     def sort(self) -> None:
         """
@@ -546,7 +545,7 @@ class CircularList:
         else:
             length = self.length()
             cur = self.sentinel
-            for pass_num in range(length - 1):
+            for pass_num in range(length):
                 for ind in range(length):
                     if cur.next.value is not None and cur.value is not None:
                         if cur.value > cur.next.value:
@@ -843,6 +842,10 @@ if __name__ == '__main__':
     for case in test_cases:
         lst = CircularList(case)
         lst.reverse()
+        cur = lst.sentinel
+        for i in range(lst.length()):
+            print(cur)
+            cur = cur.next
         print(lst)
 
     print('\n# reverse example 2')
@@ -893,6 +896,13 @@ if __name__ == '__main__':
         print(lst)
         lst.sort()
         print(lst)
+
+    print('\n# sort example 2')
+    test_case = [99340, 11544,  -77793, -47108]
+    lst = CircularList(test_case)
+    print(lst)
+    lst.sort()
+    print(lst)
 
     print('\n# rotate example 1')
     source = [_ for _ in range(-20, 20, 7)]
