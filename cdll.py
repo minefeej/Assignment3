@@ -372,11 +372,7 @@ class CircularList:
                 return self.count_rec(count, cur.next, val)
 
     def get_length(self):
-        cur = self.sentinel.next
-        count = 0
-        while cur != self.sentinel:
-            count += 1
-            cur = cur.next
+        length
         return count
 
     def swap_pairs(self, index1: int, index2: int) -> None:
@@ -384,7 +380,7 @@ class CircularList:
         Swaps two nodes given their indices.
         """
         #length = self.length()
-        length = self.get_length()
+        # length = self.get_length()
         # Set highest index to high and lowest to low.
         if index1 > index2:
             high = index1
@@ -393,7 +389,7 @@ class CircularList:
             high = index2
             low = index1
         # Check for invalid indices.
-        if self.is_empty() is True or index1 < 0 or index2 < 0 or index1 > length - 1 or index2 > length - 1:
+        if self.is_empty() or index1 < 0 or index2 < 0:
             raise CDLLException
         # Else, iterate through the indices to find the two indices that were called.
             # Check to make sure the indices are not equal.
@@ -407,28 +403,37 @@ class CircularList:
                 high_prev = None
                 high_next = None
                 cur = self.sentinel.next
+                count = 0
                 # Loop through the list and grab the right values.
-                for i in range(length - 1):
-                    if i == low:
+                while cur != self.sentinel:
+                    if count == low:
                         low_node = cur
                         low_prev = cur.prev
                         low_next = cur.next
                         cur = cur.next
-                    elif i == high - 1:
-                        high_node = cur.next
-                        high_prev = cur
+                        count += 1
+                    elif count == high:
+                        high_node = cur
+                        high_prev = cur.prev
                         high_next = high_node.next
+                        cur = cur.next
+                        count += 1
                     else:
                         cur = cur.next
-                # Make the swap.
-                low_prev.next = high_node
-                low_node.next = high_next
-                low_node.prev = high_prev
-                low_next.prev = high_node
-                high_prev.next = low_node
-                high_node.prev = low_prev
-                high_node.next = low_next
-                high_next.prev = low_node
+                        count += 1
+                # Exception is raised if the loops has made it through all values without assigning high_node.
+                if high_node is None:
+                    raise CDLLException
+                else:
+                    # Make the swap.
+                    low_prev.next = high_node
+                    low_node.next = high_next
+                    low_node.prev = high_prev
+                    low_next.prev = high_node
+                    high_prev.next = low_node
+                    high_node.prev = low_prev
+                    high_node.next = low_next
+                    high_next.prev = low_node
             # Else, if the two values are right next to one another, we have to change the values that we grab.
             else:
                 low_node = None
@@ -436,18 +441,18 @@ class CircularList:
                 high_node = None
                 high_next = None
                 cur = self.sentinel.next
+                count = 0
                 # Loop through the list to grab the values.
-                for i in range(length - 1):
-                    if i == low:
+                while cur != self.sentinel:
+                    if count == low:
                         low_node = cur
                         low_prev = cur.prev
                         high_node = cur.next
                         high_next = high_node.next
-                    # elif i == high - 1
-                    #     high_node = cur.next
-                    #     high_next = high_node.next
+                        count += 1
                     else:
                         cur = cur.next
+                        count += 1
                 # Make the swap.
                 low_prev.next = high_node
                 low_node.next = high_next
