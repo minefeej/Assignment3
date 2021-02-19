@@ -418,7 +418,7 @@ class CircularList:
                         cur = cur.next
                         count += 1
                 # Exception is raised if the loops has made it through all values without assigning high_node.
-                if high_node is None:
+                if high_node is None or high_node == self.sentinel:
                     raise CDLLException
                 else:
                     # Make the swap.
@@ -449,7 +449,7 @@ class CircularList:
                     else:
                         cur = cur.next
                         count += 1
-                if high_node is None:
+                if high_node is None or high_node == self.sentinel:
                     raise CDLLException
                 else:
                     # Make the swap.
@@ -843,11 +843,11 @@ if __name__ == '__main__':
             print(type(e))
 
     # print('\n# swap_pairs example 1')
-    # lst = CircularList([72689, 75834, -48675, 66819, 64896, 56310, 5968, -28993, -35622, -13237])
+    # lst = CircularList([6196, 27474, 89329, -53623, 98065, -13683])
     #
-    # print('Swap nodes ', 10, 10, ' ', end='')
+    # print('Swap nodes ', 6, 5, ' ', end='')
     # try:
-    #     lst.swap_pairs(10, 10)
+    #     lst.swap_pairs(6, 5)
     #     print(lst)
     # except Exception as e:
     #     print(type(e))
