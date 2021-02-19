@@ -387,69 +387,68 @@ class CircularList:
         if self.is_empty() is True or index1 < 0 or index2 < 0 or index1 > length - 1 or index2 > length - 1:
             raise CDLLException
         # Else, iterate through the indices to find the two indices that were called.
-        else:
             # Check to make sure the indices are not equal.
-            if index1 != index2:
-                # Check to ensure the two indices aren't right next to each other.
-                if high != low +1:
-                    low_node = None
-                    low_prev = None
-                    low_next = None
-                    high_node = None
-                    high_prev = None
-                    high_next = None
-                    cur = self.sentinel.next
-                    # Loop through the list and grab the right values.
-                    for i in range(high + 1):
-                        if i == low:
-                            low_node = cur
-                            low_prev = cur.prev
-                            low_next = cur.next
-                            cur = cur.next
-                        elif i == high:
-                            high_node = cur
-                            high_prev = cur.prev
-                            high_next = cur.next
-                        else:
-                            cur = cur.next
-                    # Make the swap.
-                    low_prev.next = high_node
-                    low_node.next = high_next
-                    low_node.prev = high_prev
-                    low_next.prev = high_node
-                    high_prev.next = low_node
-                    high_node.prev = low_prev
-                    high_node.next = low_next
-                    high_next.prev = low_node
-                    pass
-                # Else, if the two values are right next to one another, we have to change the values that we grab.
-                else:
-                    low_node = None
-                    low_prev = None
-                    high_node = None
-                    high_next = None
-                    cur = self.sentinel.next
-                    # Loop through the list to grab the values.
-                    for i in range(high + 1):
-                        if i == low:
-                            low_node = cur
-                            low_prev = cur.prev
-                            cur = cur.next
-                        elif i == high:
-                            high_node = cur
-                            high_next = cur.next
-                        else:
-                            cur = cur.next
-                    # Make the swap.
-                    low_prev.next = high_node
-                    low_node.next = high_next
-                    low_node.prev = high_node
-                    high_node.prev = low_prev
-                    high_node.next = low_node
-                    high_next.prev = low_node
-                    pass
-            else:
+        if index1 != index2:
+            # Check to ensure the two indices aren't right next to each other.
+            if high != low + 1:
+                low_node = None
+                low_prev = None
+                low_next = None
+                high_node = None
+                high_prev = None
+                high_next = None
+                cur = self.sentinel.next
+                # Loop through the list and grab the right values.
+                for i in range(length):
+                    if i == low:
+                        low_node = cur
+                        low_prev = cur.prev
+                        low_next = cur.next
+                        cur = cur.next
+                    elif i == high:
+                        high_node = cur
+                        high_prev = cur.prev
+                        high_next = cur.next
+                    else:
+                        cur = cur.next
+                # Make the swap.
+                low_prev.next = high_node
+                low_node.next = high_next
+                low_node.prev = high_prev
+                low_next.prev = high_node
+                high_prev.next = low_node
+                high_node.prev = low_prev
+                high_node.next = low_next
+                high_next.prev = low_node
                 pass
+            # Else, if the two values are right next to one another, we have to change the values that we grab.
+            else:
+                low_node = None
+                low_prev = None
+                high_node = None
+                high_next = None
+                cur = self.sentinel.next
+                # Loop through the list to grab the values.
+                for i in range(length):
+                    if i == low:
+                        low_node = cur
+                        low_prev = cur.prev
+                        cur = cur.next
+                    elif i == high:
+                        high_node = cur
+                        high_next = cur.next
+                    else:
+                        cur = cur.next
+                # Make the swap.
+                low_prev.next = high_node
+                low_node.next = high_next
+                low_node.prev = high_node
+                high_node.prev = low_prev
+                high_node.next = low_node
+                high_next.prev = low_node
+                pass
+        else:
+            pass
         # length = self.length()
         # if index1 == index2:
         #     pass
