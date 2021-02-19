@@ -399,16 +399,16 @@ class CircularList:
                 high_next = None
                 cur = self.sentinel.next
                 # Loop through the list and grab the right values.
-                for i in range(length):
+                for i in range(length - 1):
                     if i == low:
                         low_node = cur
                         low_prev = cur.prev
                         low_next = cur.next
                         cur = cur.next
-                    elif i == high:
-                        high_node = cur
-                        high_prev = cur.prev
-                        high_next = cur.next
+                    elif i == high - 1:
+                        high_node = cur.next
+                        high_prev = cur
+                        high_next = high_node.next
                     else:
                         cur = cur.next
                 # Make the swap.
@@ -420,7 +420,6 @@ class CircularList:
                 high_node.prev = low_prev
                 high_node.next = low_next
                 high_next.prev = low_node
-                pass
             # Else, if the two values are right next to one another, we have to change the values that we grab.
             else:
                 low_node = None
@@ -429,14 +428,15 @@ class CircularList:
                 high_next = None
                 cur = self.sentinel.next
                 # Loop through the list to grab the values.
-                for i in range(length):
+                for i in range(length - 1):
                     if i == low:
                         low_node = cur
                         low_prev = cur.prev
-                        cur = cur.next
-                    elif i == high:
-                        high_node = cur
-                        high_next = cur.next
+                        high_node = cur.next
+                        high_next = high_node.next
+                    # elif i == high - 1
+                    #     high_node = cur.next
+                    #     high_next = high_node.next
                     else:
                         cur = cur.next
                 # Make the swap.
@@ -446,9 +446,8 @@ class CircularList:
                 high_node.prev = low_prev
                 high_node.next = low_node
                 high_next.prev = low_node
-                pass
         else:
-            pass
+            return
         # length = self.length()
         # if index1 == index2:
         #     pass
@@ -708,7 +707,6 @@ class CircularList:
                         cur.value = cur.value - 10
                 num_i -= 1
                 cur = cur.prev
-
 
 
 if __name__ == '__main__':
