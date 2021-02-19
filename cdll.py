@@ -371,11 +371,20 @@ class CircularList:
             else:
                 return self.count_rec(count, cur.next, val)
 
+    def get_length(self):
+        cur = self.sentinel.next
+        count = 0
+        while cur != self.sentinel:
+            count += 1
+            cur = cur.next
+        return count
+
     def swap_pairs(self, index1: int, index2: int) -> None:
         """
         Swaps two nodes given their indices.
         """
-        length = self.length()
+        #length = self.length()
+        length = self.get_length()
         # Set highest index to high and lowest to low.
         if index1 > index2:
             high = index1
@@ -805,7 +814,7 @@ if __name__ == '__main__':
 
     print('\n# count example 1')
     lst = CircularList([1, 2, 3, 1, 2, 2])
-    print(lst, lst.count(1), lst.count(2), lst.count(3), lst.count(4))
+    # print(lst, lst.count(1), lst.count(2), lst.count(3), lst.count(4))
 
     print('\n# swap_pairs example 1')
     lst = CircularList([0, 1, 2, 3, 4, 5, 6])
@@ -817,6 +826,7 @@ if __name__ == '__main__':
         try:
             lst.swap_pairs(i, j)
             print(lst)
+            print(lst.length())
         except Exception as e:
             print(type(e))
 
