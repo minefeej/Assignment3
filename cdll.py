@@ -375,9 +375,6 @@ class CircularList:
         """
         Swaps two nodes given their indices.
         """
-        #length = self.length()
-        # length = self.get_length()
-        # Set highest index to high and lowest to low.
         if index1 > index2:
             high = index1
             low = index2
@@ -401,7 +398,8 @@ class CircularList:
                 cur = self.sentinel.next
                 count = 0
                 # Loop through the list and grab the right values.
-                while cur != self.sentinel:
+                #while cur != self.sentinel:
+                while cur != self.sentinel or high_node is None:
                     if count == low:
                         low_node = cur
                         low_prev = cur.prev
@@ -439,7 +437,7 @@ class CircularList:
                 cur = self.sentinel.next
                 count = 0
                 # Loop through the list to grab the values.
-                while cur != self.sentinel:
+                while cur != self.sentinel or high_node is None:
                     if count == low:
                         low_node = cur
                         low_prev = cur.prev
@@ -469,67 +467,6 @@ class CircularList:
                 raise CDLLException
             else:
                 return
-        # length = self.length()
-        # if index1 == index2:
-        #     pass
-        # elif self.is_empty() is True or index1 < 0 or index2 < 0 or index1 > length - 1 or index2 > length - 1:
-        #     raise CDLLException
-        # else:
-        #     if index1 + 1 == index2 or index1 - 1 == index2:
-        #         one_node = None
-        #         one_prev = None
-        #         two_node = None
-        #         two_next = None
-        #         cur = self.sentinel.next
-        #         # Loop through the list to grab the values.
-        #         for i in range(length):
-        #             if i == index1:
-        #                 one_node = cur
-        #                 one_prev = cur.prev
-        #                 cur = cur.next
-        #             elif i == index2:
-        #                 two_node = cur
-        #                 two_next = cur.next
-        #             else:
-        #                 cur = cur.next
-        #         # Make the swap.
-        #         one_prev.next = two_node
-        #         one_node.next = two_next
-        #         one_node.prev = two_node
-        #         two_node.prev = one_prev
-        #         two_node.next = one_node
-        #         two_next.prev = one_node
-        #
-        #     else:
-        #         one_node = None
-        #         one_prev = None
-        #         one_next = None
-        #         two_node = None
-        #         two_prev = None
-        #         two_next = None
-        #         cur = self.sentinel.next
-        #         # Loop through the list and grab the right values.
-        #         for i in range(length):
-        #             if i == index1:
-        #                 one_node = cur
-        #                 one_prev = cur.prev
-        #                 one_next = cur.next
-        #                 cur = cur.next
-        #             elif i == index2:
-        #                 two_node = cur
-        #                 two_prev = cur.prev
-        #                 two_next = cur.next
-        #             else:
-        #                 cur = cur.next
-        #         # Make the swap.
-        #         one_prev.next = two_node
-        #         one_node.next = two_next
-        #         one_node.prev = two_prev
-        #         one_next.prev = two_node
-        #         two_prev.next = one_node
-        #         two_node.prev = one_prev
-        #         two_node.next = one_next
-        #         two_next.prev = one_node
 
     def reverse(self) -> None:
         """
@@ -828,29 +765,29 @@ if __name__ == '__main__':
     # lst = CircularList([1, 2, 3, 1, 2, 2])
     # # print(lst, lst.count(1), lst.count(2), lst.count(3), lst.count(4))
     #
-    print('\n# swap_pairs example 1')
-    lst = CircularList([0, 1, 2, 3, 4, 5, 6])
-    test_cases = ((0, 6), (0, 7), (-1, 6), (1, 5),
-                  (4, 2), (3, 3), (1, 2), (2, 1))
-
-    for i, j in test_cases:
-        print('Swap nodes ', i, j, ' ', end='')
-        try:
-            lst.swap_pairs(i, j)
-            print(lst)
-            print(lst.length())
-        except Exception as e:
-            print(type(e))
-
     # print('\n# swap_pairs example 1')
-    # lst = CircularList([6196, 27474, 89329, -53623, 98065, -13683])
+    # lst = CircularList([0, 1, 2, 3, 4, 5, 6])
+    # test_cases = ((0, 6), (0, 7), (-1, 6), (1, 5),
+    #               (4, 2), (3, 3), (1, 2), (2, 1))
     #
-    # print('Swap nodes ', 6, 5, ' ', end='')
-    # try:
-    #     lst.swap_pairs(6, 5)
-    #     print(lst)
-    # except Exception as e:
-    #     print(type(e))
+    # for i, j in test_cases:
+    #     print('Swap nodes ', i, j, ' ', end='')
+    #     try:
+    #         lst.swap_pairs(i, j)
+    #         print(lst)
+    #         print(lst.length())
+    #     except Exception as e:
+    #         print(type(e))
+
+    print('\n# swap_pairs example 1')
+    lst = CircularList([6196, 27474, 89329, -53623, 98065, -13683])
+
+    print('Swap nodes ', 6, 5, ' ', end='')
+    try:
+        lst.swap_pairs(6, 5)
+        print(lst)
+    except Exception as e:
+        print(type(e))
 
     # print('\n# reverse example 1')
     # test_cases = (
